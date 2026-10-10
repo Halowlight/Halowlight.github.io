@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -62,9 +62,9 @@ img{max-width:100%;display:block}
 .links a{display:flex;align-items:center;gap:10px;padding:6px 8px;color:var(--muted);text-decoration:none;font-size:14px}
 .links a:hover{color:var(--text);background:#0E1626}
 .links svg{width:17px;height:17px;fill:currentColor;flex:none}
-.mail{padding:6px 16px 0;font-size:12px;color:var(--muted);word-break:break-all}
-.mail code{font:500 12px var(--mono);color:var(--text)}
-.mail button{all:unset;cursor:pointer;margin-left:6px;color:var(--acc);font-size:12px}
+.mail{display:flex;align-items:center;flex-wrap:nowrap;gap:5px;white-space:nowrap;padding:6px 12px 0;font-size:11px;color:var(--muted)}
+.mail code{font:500 11px var(--mono);color:var(--text)}
+.mail button{all:unset;cursor:pointer;margin-left:0;color:var(--acc);font-size:11px;flex:none}
 .mail button:hover{text-decoration:underline}
 .lang{all:unset;box-sizing:border-box;cursor:pointer;display:block;margin:10px 16px 0;padding:5px 12px;border:1px solid var(--line);text-align:center;font:600 13px var(--display);letter-spacing:.08em;color:var(--text)}
 .lang:hover{border-color:var(--acc);color:var(--acc)}
@@ -152,6 +152,13 @@ footer.fine{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);co
   .upd{flex-direction:column;gap:2px}
 }
 .mlang{all:unset;display:none;box-sizing:border-box;cursor:pointer;flex:none;margin:0 10px;padding:4px 10px;border:1px solid var(--line);font:600 13px var(--display);letter-spacing:.08em;color:var(--text)}
+/* nút VN/EN nổi ở góc dưới bên phải (máy tính: .lang, điện thoại: .mlang) */
+.lang{position:fixed;right:18px;bottom:18px;margin:0;padding:8px 14px;background:#0E1626;border:1px solid #2A3750;box-shadow:0 6px 18px #000a;z-index:50}
+main{padding-bottom:72px}
+@media (max-width:760px){
+  .mlang{position:fixed!important;right:14px;left:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));margin:0!important;padding:8px 14px;background:#0E1626;border:1px solid #2A3750;box-shadow:0 6px 18px #000a;z-index:50}
+  .mlang:hover{border-color:var(--acc);color:var(--acc)}
+}
 
 /* ===== animation ===== */
 @property --acc{syntax:"<color>";inherits:true;initial-value:#22C55E}
@@ -378,7 +385,7 @@ var ICONS = {
   star: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z"
 };
 
-var lang = "vi", current = null, cat = null;
+var lang = "en", current = null, cat = null;
 try { var sv = localStorage.getItem("nohalow-lang"); if (sv === "en" || sv === "vi") lang = sv; } catch (e) {}
 function L(o) { return o ? (o[lang] || o.vi || "") : ""; }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -513,9 +520,28 @@ function toggleLang() {
 }
 document.getElementById("lang").addEventListener("click", toggleLang);
 document.getElementById("lang2").addEventListener("click", toggleLang);
+function copyText(txt) {
+  return new Promise(function (ok, fail) {
+    function legacy() {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = txt; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+        document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, txt.length);
+        var done = document.execCommand("copy"); document.body.removeChild(ta);
+        done ? ok() : fail();
+      } catch (e) { fail(e); }
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(ok, legacy);
+    else legacy();
+  });
+}
 document.getElementById("copy").addEventListener("click", function () {
   var b = this;
-  try { navigator.clipboard.writeText("halowlight@gmail.com").then(function () { b.textContent = "✓"; setTimeout(function () { b.textContent = L(UI.copy); }, 1200); }, function () {}); } catch (e) {}
+  copyText("halowlight@gmail.com").then(function () {
+    b.textContent = lang === "vi" ? "Đã chép ✓" : "Copied ✓";
+  }, function () {
+    b.textContent = lang === "vi" ? "Chép lỗi" : "Failed";
+  }).then(function () { setTimeout(function () { b.textContent = L(UI.copy); }, 1500); });
 });
 
 /* ===== hiệu ứng ===== */
