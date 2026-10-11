@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -62,12 +62,10 @@ img{max-width:100%;display:block}
 .links a{display:flex;align-items:center;gap:10px;padding:6px 8px;color:var(--muted);text-decoration:none;font-size:14px}
 .links a:hover{color:var(--text);background:#0E1626}
 .links svg{width:17px;height:17px;fill:currentColor;flex:none}
-.mail{display:flex;align-items:center;flex-wrap:nowrap;gap:5px;white-space:nowrap;padding:6px 12px 0;font-size:11px;color:var(--muted)}
-.mail code{font:500 11px var(--mono);color:var(--text)}
-.mail button{all:unset;cursor:pointer;margin-left:0;color:var(--acc);font-size:11px;flex:none}
+.mail{padding:6px 16px 0;font-size:12px;color:var(--muted);word-break:break-all}
+.mail code{font:500 12px var(--mono);color:var(--text)}
+.mail button{all:unset;cursor:pointer;margin-left:6px;color:var(--acc);font-size:12px}
 .mail button:hover{text-decoration:underline}
-.lang{all:unset;box-sizing:border-box;cursor:pointer;display:block;margin:10px 16px 0;padding:5px 12px;border:1px solid var(--line);text-align:center;font:600 13px var(--display);letter-spacing:.08em;color:var(--text)}
-.lang:hover{border-color:var(--acc);color:var(--acc)}
 
 /* ===== nội dung ===== */
 main{overflow-x:clip;margin-left:var(--rail-w);padding-inline:clamp(16px,4vw,56px);padding-block:0 40px}
@@ -147,18 +145,21 @@ footer.fine{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);co
   .tab{border-left:0;border-bottom:3px solid transparent;padding:10px 16px;flex:none;align-items:center;text-align:center}
   .tab[aria-selected="true"]{border-left-color:transparent;border-bottom-color:var(--tc)}
   .tab .ts,.tab .soon{display:none}
-  .mlang{display:block!important}
   main{margin-left:0}
   .upd{flex-direction:column;gap:2px}
 }
-.mlang{all:unset;display:none;box-sizing:border-box;cursor:pointer;flex:none;margin:0 10px;padding:4px 10px;border:1px solid var(--line);font:600 13px var(--display);letter-spacing:.08em;color:var(--text)}
-/* nút VN/EN nổi ở góc dưới bên phải (máy tính: .lang, điện thoại: .mlang) */
-.lang{position:fixed;right:18px;bottom:18px;margin:0;padding:8px 14px;background:#0E1626;border:1px solid #2A3750;box-shadow:0 6px 18px #000a;z-index:50}
-main{padding-bottom:72px}
-@media (max-width:760px){
-  .mlang{position:fixed!important;right:14px;left:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));margin:0!important;padding:8px 14px;background:#0E1626;border:1px solid #2A3750;box-shadow:0 6px 18px #000a;z-index:50}
-  .mlang:hover{border-color:var(--acc);color:var(--acc)}
-}
+
+
+/* công tắc ngôn ngữ VI | EN */
+.langsw{position:relative;display:grid;grid-template-columns:1fr 1fr;margin:10px 16px 0;padding:3px;border:1px solid #2A3750;background:#0E1626}
+.langsw.mlang{display:none}
+.langsw .thumb{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:var(--acc);box-shadow:inset -2px -2px #0004,inset 2px 2px #fff4;transition:transform .32s cubic-bezier(.3,.8,.2,1)}
+.langsw[data-l="en"] .thumb{transform:translateX(100%)}
+.langsw button{all:unset;position:relative;z-index:1;box-sizing:border-box;text-align:center;padding:6px 0;cursor:pointer;font:700 13px var(--display);letter-spacing:.1em;color:var(--muted);transition:color .25s}
+.langsw button:hover{color:var(--text)}
+.langsw button[aria-checked="true"]{color:var(--acc-ink)}
+.langsw button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+@media (max-width:760px){.langsw.mlang{display:grid!important;margin:0 10px;flex:none;width:92px}.langsw button{padding:5px 0}}
 
 /* ===== animation ===== */
 @property --acc{syntax:"<color>";inherits:true;initial-value:#22C55E}
@@ -244,7 +245,7 @@ h1 em.w{animation:rise .7s cubic-bezier(.2,.7,.2,1) both,shimmer 6s linear infin
   <a class="logo" href="#" id="logo" aria-label="nohalow"><i>N</i><b>noha<span>low</span></b></a>
   <div class="cat" id="cat"></div>
   <div class="tabs" id="tabs" role="tablist" aria-orientation="vertical"></div>
-  <button class="mlang" id="lang2" type="button" aria-label="Đổi ngôn ngữ / Switch language">EN</button>
+  <div class="langsw mlang" id="lang2" role="radiogroup" aria-label="Ngôn ngữ / Language" data-l="vi"><span class="thumb"></span><button type="button" role="radio" aria-checked="true" data-lang="vi">VI</button><button type="button" role="radio" aria-checked="false" data-lang="en">EN</button></div>
   <div class="foot">
     <div class="lab" id="lab-connect">Kết nối</div>
     <nav class="links" aria-label="Liên kết">
@@ -254,7 +255,7 @@ h1 em.w{animation:rise .7s cubic-bezier(.2,.7,.2,1) both,shimmer 6s linear infin
       <a href="https://www.youtube.com/@Nohalow"><svg viewBox="0 0 16 16"><path d="M2 3h12a2 2 0 012 2v6a2 2 0 01-2 2H2a2 2 0 01-2-2V5a2 2 0 012-2zm4.5 2.2v5.6L11 8z"/></svg>YouTube</a>
     </nav>
     <div class="mail">Gmail: <code>halowlight@gmail.com</code><button type="button" id="copy">Sao chép</button></div>
-    <button class="lang" id="lang" type="button" aria-label="Đổi ngôn ngữ / Switch language">EN</button>
+    <div class="langsw" id="lang" role="radiogroup" aria-label="Ngôn ngữ / Language" data-l="vi"><span class="thumb"></span><button type="button" role="radio" aria-checked="true" data-lang="vi">VI</button><button type="button" role="radio" aria-checked="false" data-lang="en">EN</button></div>
   </div>
 </aside>
 
@@ -313,15 +314,15 @@ var PRODUCTS = [
   {
     id: "nohaspace", name: "nohaspace", group: "app", status: "released",
     color: "#4DA3FF", ink: "#05203F", color2: "#8B7CFF",
-    sub:   { vi: "Ghi chú & canvas · v1.0.0", en: "Notes & canvas · v1.0.0" },
-    badge: { vi: "v1.0.0 · Đã ra mắt", en: "v1.0.0 · Now available" },
+    sub:   { vi: "Ghi chú & canvas · v1.0.1", en: "Notes & canvas · v1.0.1" },
+    badge: { vi: "v1.0.1 · Đã ra mắt", en: "v1.0.1 · Now available" },
     title: { vi: "Ghi chú và <em>canvas</em> trong một không gian", en: "Notes and <em>canvas</em> in one workspace" },
     lead:  { vi: "Viết trang, chia trang con, vẽ sơ đồ và ghi chú tay ở cùng một chỗ. Dữ liệu lưu ngay trên máy bạn.", en: "Write pages, nest sub-pages, sketch diagrams and draw by hand in one place. Your data stays on your device." },
     buttons: [
-      { href: "https://github.com/Halowlight/nohaspace/releases/download/v1.0.0/NoHaSpace_Setup-v1.0.0.exe", primary: true, icon: "download", label: { vi: "Tải về", en: "Download" } },
+      { href: "https://github.com/Halowlight/nohaspace/releases/download/v1.0.1/NoHaSpace_Setup-v1.0.1.exe", primary: true, icon: "download", label: { vi: "Tải về", en: "Download" } },
       { href: "https://github.com/Halowlight/nohaspace", label: { vi: "GitHub", en: "GitHub" } }
     ],
-    meta:  { vi: "Phiên bản mới nhất: v1.0.0 · Miễn phí · Có sao lưu và xuất file", en: "Latest version: v1.0.0 · Free · Backup and export included" },
+    meta:  { vi: "Phiên bản mới nhất: v1.0.1 · Miễn phí · Có sao lưu và xuất file", en: "Latest version: v1.0.1 · Free · Backup and export included" },
     image: "img/space.jpg", imageAlt: { vi: "Giao diện nohaspace với trang Getting started và sơ đồ cây", en: "nohaspace showing the Getting started page and a tree diagram" }, imageSize: [1000, 594],
     features: {
       title: { vi: "Một chỗ cho <em>mọi ghi chú</em>", en: "One place for <em>every note</em>" },
@@ -337,7 +338,7 @@ var PRODUCTS = [
       title: { vi: "Bắt đầu <em>trong 3 bước</em>", en: "Get started <em>in 3 steps</em>" },
       sub:   { vi: "Tải về là dùng được.", en: "Download and go." },
       items: [
-        { title: { vi: "Tải về", en: "Download" }, text: { vi: "Bấm Tải về, rồi mở file NoHaSpace_Setup-v1.0.0.exe và làm theo trình cài đặt.", en: "Click Download, then open NoHaSpace_Setup-v1.0.0.exe and follow the installer." } },
+        { title: { vi: "Tải về", en: "Download" }, text: { vi: "Bấm Tải về, rồi mở file NoHaSpace_Setup-v1.0.1.exe và làm theo trình cài đặt.", en: "Click Download, then open NoHaSpace_Setup-v1.0.1.exe and follow the installer." } },
         { title: { vi: "Tạo trang hoặc canvas", en: "Create a page or canvas" }, text: { vi: "Chọn New page hoặc New canvas ở góc dưới thanh bên.", en: "Pick New page or New canvas at the bottom of the sidebar." } },
         { title: { vi: "Sao lưu", en: "Back up" }, text: { vi: "Dữ liệu lưu trên máy bạn, nên hãy bấm Backup hoặc Export định kỳ.", en: "Your data lives on your device, so use Backup or Export now and then." } }
       ]
@@ -357,6 +358,7 @@ var PRODUCTS = [
 
 /* ===== CẬP NHẬT: thêm dòng mới lên đầu. app = id của sản phẩm (hiện ở trang sản phẩm đó) ===== */
 var UPDATES = [
+  { app: "nohaspace", date: "2026-10", version: "v1.0.1", vi: "Sửa lỗi không lưu được dữ liệu. App khởi động ổn định hơn và lưu trọn vẹn khi tắt.", en: "Fixed notes not being saved. The app now starts more reliably and saves safely on exit." },
   { app: "nohaserver", date: "2026-10", version: "v1.2.7", vi: "Phát hành bản cài đặt .exe cho Windows trên GitHub Releases.", en: "Released the Windows .exe installer on GitHub Releases." },
   { app: "nohaserver", date: "2026-10", version: "", vi: "Bỏ tích hợp playit.gg khỏi app.", en: "Removed the playit.gg integration from the app." }
 ];
@@ -385,7 +387,7 @@ var ICONS = {
   star: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z"
 };
 
-var lang = "en", current = null, cat = null;
+var lang = "vi", current = null, cat = null;
 try { var sv = localStorage.getItem("nohalow-lang"); if (sv === "en" || sv === "vi") lang = sv; } catch (e) {}
 function L(o) { return o ? (o[lang] || o.vi || "") : ""; }
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -480,7 +482,10 @@ function render() {
   renderRail(); renderPages(); enhance();
   document.getElementById("lab-connect").textContent = L(UI.connect);
   document.getElementById("copy").textContent = L(UI.copy);
-  document.getElementById("lang").textContent = document.getElementById("lang2").textContent = lang === "vi" ? "EN" : "VI";
+  ["lang", "lang2"].forEach(function (id) {
+    var sw = document.getElementById(id); sw.setAttribute("data-l", lang);
+    Array.prototype.forEach.call(sw.querySelectorAll("button"), function (b) { b.setAttribute("aria-checked", b.getAttribute("data-lang") === lang ? "true" : "false"); });
+  });
   show(current || (location.hash || "").slice(1) || (PRODUCTS[0] && PRODUCTS[0].id), { keepScroll: true, noHash: true });
 }
 
@@ -513,35 +518,20 @@ document.getElementById("tabs").addEventListener("keydown", function (e) {
   if (n) { e.preventDefault(); show(all[(i + n + all.length) % all.length].id.slice(4), { focus: true }); }
 });
 document.getElementById("logo").addEventListener("click", function (e) { e.preventDefault(); if (PRODUCTS[0]) show(PRODUCTS[0].id); });
-function toggleLang() {
-  lang = lang === "vi" ? "en" : "vi";
+function setLang(l) {
+  if (l === lang) return;
+  lang = l;
   try { localStorage.setItem("nohalow-lang", lang); } catch (e) {}
   render();
 }
-document.getElementById("lang").addEventListener("click", toggleLang);
-document.getElementById("lang2").addEventListener("click", toggleLang);
-function copyText(txt) {
-  return new Promise(function (ok, fail) {
-    function legacy() {
-      try {
-        var ta = document.createElement("textarea");
-        ta.value = txt; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
-        document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, txt.length);
-        var done = document.execCommand("copy"); document.body.removeChild(ta);
-        done ? ok() : fail();
-      } catch (e) { fail(e); }
-    }
-    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(ok, legacy);
-    else legacy();
+["lang", "lang2"].forEach(function (id) {
+  document.getElementById(id).addEventListener("click", function (e) {
+    var b = e.target.closest("[data-lang]"); if (b) setLang(b.getAttribute("data-lang"));
   });
-}
+});
 document.getElementById("copy").addEventListener("click", function () {
   var b = this;
-  copyText("halowlight@gmail.com").then(function () {
-    b.textContent = lang === "vi" ? "Đã chép ✓" : "Copied ✓";
-  }, function () {
-    b.textContent = lang === "vi" ? "Chép lỗi" : "Failed";
-  }).then(function () { setTimeout(function () { b.textContent = L(UI.copy); }, 1500); });
+  try { navigator.clipboard.writeText("halowlight@gmail.com").then(function () { b.textContent = "✓"; setTimeout(function () { b.textContent = L(UI.copy); }, 1200); }, function () {}); } catch (e) {}
 });
 
 /* ===== hiệu ứng ===== */
