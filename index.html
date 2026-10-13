@@ -236,11 +236,117 @@ h1 em.w{animation:rise .7s cubic-bezier(.2,.7,.2,1) both,shimmer 6s linear infin
   #vox{display:none}
 }
 
+/* ===== v2: nâng cấp giao diện ===== */
+body::before{content:"";position:fixed;inset:0 0 0 var(--rail-w);z-index:0;pointer-events:none;background-image:linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 60% 25%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 80% 70% at 60% 25%,#000 20%,transparent 75%)}
+@media (max-width:760px){body::before{left:0}}
+
+/* thanh tiến độ cuộn: chia ô như thanh máu */
+#prog{position:fixed;top:0;left:var(--rail-w);right:0;height:4px;z-index:30;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 10px,var(--bg) 10px 12px)}
+#prog i{position:absolute;inset:0;background:linear-gradient(90deg,var(--acc),var(--acc2));transform-origin:left;transform:scaleX(var(--p,0));box-shadow:0 0 12px var(--acc)}
+#prog{-webkit-mask:repeating-linear-gradient(90deg,#000 0 10px,transparent 10px 12px);mask:repeating-linear-gradient(90deg,#000 0 10px,transparent 10px 12px)}
+@media (max-width:760px){#prog{left:0;top:auto;bottom:0}}
+
+/* logo */
+.logo i{transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.logo:hover i{transform:rotate(90deg) scale(1.08)}
+.logo:hover i::after{opacity:1}
+.tab::after{content:"";position:absolute;right:14px;top:50%;width:7px;height:7px;border-right:2px solid var(--tc);border-top:2px solid var(--tc);transform:translate(-6px,-50%) rotate(45deg);opacity:0;transition:opacity .2s,transform .2s}
+.tab:hover::after,.tab[aria-selected="true"]::after{opacity:.9;transform:translate(0,-50%) rotate(45deg)}
+.tab[aria-selected="true"]{background:linear-gradient(90deg,color-mix(in srgb,var(--tc) 16%,#101A2E),#101A2E 70%)}
+.tab .soon + *{}
+
+/* hero */
+.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(380px circle at var(--hx,72%) var(--hy,30%),color-mix(in srgb,var(--acc) 13%,transparent),transparent 70%);opacity:var(--ho,0);transition:opacity .4s}
+.hero:hover{--ho:1}
+.badge{border-radius:0;border-color:color-mix(in srgb,var(--acc) 45%,var(--line));background:color-mix(in srgb,var(--acc) 8%,#0C1322)}
+.badge::before{border-radius:0;box-shadow:0 0 10px var(--acc)}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta span{padding:3px 10px;border:1px solid var(--line);background:#0B1220;font:500 12.5px var(--body);color:var(--muted)}
+.meta span:first-child{border-color:color-mix(in srgb,var(--acc) 40%,var(--line))}
+.btn{border-radius:0}
+
+/* khung ảnh app: góc cắt kiểu pixel, viền chuyển màu */
+.floaty{position:relative;filter:drop-shadow(0 0 38px color-mix(in srgb,var(--acc) 30%,transparent))}
+.win{border:0;border-radius:0;padding:3px;overflow:visible;box-shadow:none;background:linear-gradient(135deg,var(--acc),#1A2438 38%,#1A2438 62%,var(--acc2));--n:12px;clip-path:polygon(var(--n) 0,calc(100% - var(--n)) 0,calc(100% - var(--n)) var(--n),100% var(--n),100% calc(100% - var(--n)),calc(100% - var(--n)) calc(100% - var(--n)),calc(100% - var(--n)) 100%,var(--n) 100%,var(--n) calc(100% - var(--n)),0 calc(100% - var(--n)),0 var(--n),var(--n) var(--n))}
+.win:hover{box-shadow:none}
+.win .dots{background:#0B1019;align-items:center}
+.win .dots i{border-radius:0;width:10px;height:10px}
+.win .dots span{margin-left:8px;font:500 12px var(--mono);color:var(--muted)}
+.win img{background:#0A0D14}
+
+/* cụm khối isometric phía sau ảnh */
+.blocks{position:absolute;z-index:-1;pointer-events:none;overflow:visible}
+.blocks.a{left:-34px;bottom:-78px;width:170px}
+.blocks.b{right:-8px;top:-58px;width:104px}
+.blocks .cb{transform-box:fill-box;transform-origin:50% 100%;animation:drop .75s cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(.35s + var(--k)*85ms)}
+.blocks .cb g{animation:bob 5.5s ease-in-out infinite;animation-delay:calc(var(--k)*-.7s)}
+.blocks .t{fill:color-mix(in srgb,var(--c,var(--acc)),#fff 32%)}
+.blocks .l{fill:color-mix(in srgb,var(--c,var(--acc)),#000 38%)}
+.blocks .r{fill:color-mix(in srgb,var(--c,var(--acc)),#000 62%)}
+.blocks path{stroke:#00000066;stroke-width:1.2;stroke-linejoin:round}
+@keyframes drop{0%{opacity:0;transform:translateY(-90px)}55%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media (max-width:900px){.blocks.a{left:-14px;bottom:-36px;width:150px}.blocks.b{display:none}}
+
+/* tính năng: bố cục bento lệch, góc vuông, ký hiệu mờ phía sau */
+.feats{grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.feat{grid-column:span 2;position:relative;overflow:hidden;border-radius:0;padding:26px 24px}
+.feat:nth-child(4n+1),.feat:nth-child(4n+4){grid-column:span 4}
+.feat:nth-child(4n+1) p,.feat:nth-child(4n+4) p{max-width:46ch}
+.feat>*{position:relative;z-index:1}
+.feat .ghost{position:absolute;z-index:0;right:-18px;bottom:-26px;width:150px;height:150px;fill:none;stroke:var(--acc);stroke-width:1.1;opacity:.09;transition:opacity .3s,transform .5s cubic-bezier(.3,1.2,.4,1)}
+.feat:nth-child(4n+1) .ghost,.feat:nth-child(4n+4) .ghost{width:200px;height:200px;right:12px}
+.feat:hover .ghost{opacity:.2;transform:rotate(-8deg) scale(1.08)}
+.feat::before{content:"";position:absolute;left:0;top:0;width:10px;height:10px;background:var(--acc);z-index:2;transition:width .25s,height .25s}
+.feat:hover::before{width:26px;height:26px}
+.feat .ic{border-radius:0}
+@media (max-width:900px){.feats{grid-template-columns:repeat(2,minmax(0,1fr))}.feat,.feat:nth-child(4n+1),.feat:nth-child(4n+4){grid-column:span 1}}
+@media (max-width:600px){.feats{grid-template-columns:minmax(0,1fr)}}
+
+.term{border-radius:0}
+.term .dots i,.win .dots i{border-radius:0}
+.steps li::before{border-radius:0}
+
+/* cập nhật: dạng dòng thời gian */
+.upd{position:relative;padding:16px 0 16px 28px;border-top:0}
+.upd::before{content:"";position:absolute;left:0;top:23px;width:9px;height:9px;background:var(--acc);box-shadow:0 0 10px var(--acc);z-index:1}
+.upd::after{content:"";position:absolute;left:4px;top:0;bottom:0;width:1px;background:var(--line)}
+.upd:first-of-type::after{top:30px}
+.upd:last-child::after{bottom:auto;height:28px}
+.upd:only-of-type::after{display:none}
+.upd:hover{padding-left:34px}
+
+/* khối kêu gọi tải ở cuối trang */
+.final{position:relative;overflow:hidden;margin-block:8px 28px;padding:clamp(28px,5vw,52px);border:1px solid color-mix(in srgb,var(--acc) 50%,var(--line));background:linear-gradient(120deg,color-mix(in srgb,var(--acc) 14%,#0A1020),#0A1020 65%)}
+.final::before{content:"";position:absolute;inset:0;background-image:linear-gradient(color-mix(in srgb,var(--acc) 16%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--acc) 16%,transparent) 1px,transparent 1px);background-size:28px 28px;-webkit-mask-image:linear-gradient(100deg,transparent 30%,#000);mask-image:linear-gradient(100deg,transparent 30%,#000);animation:grid 14s linear infinite}
+@keyframes grid{to{background-position:28px 28px}}
+.final>*{position:relative}
+.final h2{font-size:clamp(26px,3.6vw,42px);margin-bottom:8px}
+.final h2 em{font-style:normal;color:var(--acc)}
+.final p{color:var(--muted);margin:0;max-width:44ch}
+.final .cta{margin-top:22px}
+
+/* hiệu ứng chuyển trang: ô vuông lấp đầy rồi mở ra */
+#mosaic{position:fixed;z-index:15;left:var(--rail-w);top:0;right:0;bottom:0;display:grid;pointer-events:none;overflow:hidden}
+#mosaic i{background:var(--mc);transform:scale(0);animation:cell .52s cubic-bezier(.5,0,.3,1) both;animation-delay:var(--cd)}
+@keyframes cell{0%{transform:scale(0)}40%,60%{transform:scale(1.04)}100%{transform:scale(0)}}
+@media (max-width:760px){#mosaic{left:0}}
+
+/* hạt nổ khi bấm nút tải */
+.spark{position:fixed;z-index:60;width:8px;height:8px;pointer-events:none;background:var(--acc)}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:26px;z-index:70;transform:translate(-50%,24px);opacity:0;padding:10px 18px;background:var(--acc);color:var(--acc-ink);font:700 14px var(--display);letter-spacing:.04em;box-shadow:inset -3px -3px #0004,inset 3px 3px #fff5;transition:opacity .25s,transform .35s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
 </style>
 
 </head>
 <body>
 <canvas id="vox" aria-hidden="true"></canvas>
+<div id="prog" aria-hidden="true"><i></i></div>
+<div id="mosaic" aria-hidden="true"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 <aside class="rail" aria-label="Menu">
   <a class="logo" href="#" id="logo" aria-label="nohalow"><i>N</i><b>noha<span>low</span></b></a>
   <div class="cat" id="cat"></div>
@@ -252,6 +358,7 @@ h1 em.w{animation:rise .7s cubic-bezier(.2,.7,.2,1) both,shimmer 6s linear infin
       <a href="https://discord.com/invite/M8WN5hwWuh"><svg viewBox="0 0 16 16"><path d="M2 3h12a2 2 0 012 2v6a2 2 0 01-2 2H2a2 2 0 01-2-2V5a2 2 0 012-2zm3.5 3a1.3 1.3 0 100 2.6 1.3 1.3 0 000-2.6zm5 0a1.3 1.3 0 100 2.6 1.3 1.3 0 000-2.6z"/></svg>Discord</a>
       <a href="https://github.com/Halowlight"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
       <a href="https://www.tiktok.com/@nohalow"><svg viewBox="0 0 16 16"><circle cx="5.8" cy="11.8" r="3"/><rect x="7.6" y="1" width="2.2" height="10.8"/><path d="M9.8 1c.3 2 1.5 3.3 3.7 3.6v2.1c-1.4 0-2.5-.5-3.7-1.4z"/></svg>TikTok</a>
+      <a href="https://www.facebook.com/profile.php?id=61595247005433"><svg viewBox="0 0 16 16"><path d="M9 16V9h2.3l.4-2.7H9V4.6c0-.8.3-1.3 1.4-1.3h1.4V.9C11.5.9 10.7.8 9.8.8 7.800.8 6.400 2 6.400 4.300v2H4V9h2.400v7z"/></svg>Facebook</a>
       <a href="https://www.youtube.com/@Nohalow"><svg viewBox="0 0 16 16"><path d="M2 3h12a2 2 0 012 2v6a2 2 0 01-2 2H2a2 2 0 01-2-2V5a2 2 0 012-2zm4.5 2.2v5.6L11 8z"/></svg>YouTube</a>
     </nav>
     <div class="mail">Gmail: <code>halowlight@gmail.com</code><button type="button" id="copy">Sao chép</button></div>
@@ -372,7 +479,10 @@ var GROUPS = [
 ];
 var UI = {
   connect: { vi: "Kết nối", en: "Connect" }, category: { vi: "Danh mục", en: "Category" }, copy: { vi: "Sao chép", en: "Copy" }, soon: { vi: "Sắp ra", en: "Soon" },
-  updates: { vi: "Cập nhật <em>gần đây</em>", en: "Recent <em>updates</em>" }
+  updates: { vi: "Cập nhật <em>gần đây</em>", en: "Recent <em>updates</em>" },
+  final: { vi: "Tải về và <em>chạy thử ngay</em>", en: "Download it and <em>give it a try</em>" },
+  finalsub: { vi: "Miễn phí, cài xong dùng được liền.", en: "Free, and ready to use right after install." },
+  copied: { vi: "Đã sao chép Gmail", en: "Gmail copied" }
 };
 var ICONS = {
   download: "M12 3v12m0 0l-4-4m4 4l4-4M4 20h16",
@@ -430,6 +540,29 @@ function updatesHtml(p) {
     return '<div class="upd"><span class="d">' + esc(ds) + '</span><p><b>' + esc(p.name + (u.version ? " " + u.version : "")) + '</b>: ' + esc(L(u)) + '</p></div>';
   }).join("") + '</section>';
 }
+
+/* cụm khối isometric (SVG). Mỗi khối = 3 mặt, tô theo màu sản phẩm */
+function blocksSvg(kind) {
+  var S = 34, W = S * 0.866, layouts = {
+    a: [[0,0,0,0],[1,0,0,0],[0,1,0,1],[1,1,0,0],[0,0,1,0],[2,0,0,1],[1,0,1,1]],
+    b: [[0,0,0,1],[1,0,0,0],[0,0,1,0]]
+  }, list = layouts[kind], out = "", minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9, items = [];
+  list.sort(function (m, n) { return (m[0] + m[1] + m[2] * 3) - (n[0] + n[1] + n[2] * 3); });
+  list.forEach(function (c, i) {
+    var cx = (c[0] - c[1]) * W, cy = (c[0] + c[1]) * S * 0.5 - c[2] * S;
+    items.push([cx, cy, c[3], i]);
+    minx = Math.min(minx, cx - W); maxx = Math.max(maxx, cx + W); miny = Math.min(miny, cy - S); maxy = Math.max(maxy, cy + S);
+  });
+  items.forEach(function (it) {
+    var x = it[0] - minx, y = it[1] - miny + S, h = S * 0.5;
+    var top = "M" + x + " " + (y - S) + "L" + (x + W) + " " + (y - S + h) + "L" + x + " " + (y - S + S) + "L" + (x - W) + " " + (y - S + h) + "Z";
+    var left = "M" + (x - W) + " " + (y - S + h) + "L" + x + " " + y + "L" + x + " " + (y + S) + "L" + (x - W) + " " + (y + h) + "Z";
+    var right = "M" + (x + W) + " " + (y - S + h) + "L" + x + " " + y + "L" + x + " " + (y + S) + "L" + (x + W) + " " + (y + h) + "Z";
+    out += '<g class="cb" style="--k:' + it[3] + (it[2] ? ';--c:var(--acc2)' : '') + '"><g><path class="l" d="' + left + '"/><path class="r" d="' + right + '"/><path class="t" d="' + top + '"/></g></g>';
+  });
+  var vw = maxx - minx, vh = maxy - miny + S * 2;
+  return '<svg class="blocks ' + kind + '" viewBox="0 0 ' + vw.toFixed(1) + ' ' + vh.toFixed(1) + '" aria-hidden="true">' + out + '</svg>';
+}
 function pageHtml(p) {
   var soon = p.status === "soon";
   var btns = (p.buttons || []).map(function (b) {
@@ -438,13 +571,13 @@ function pageHtml(p) {
   }).join("");
   var h = '<section class="hero' + (p.image ? '' : ' solo') + '"><div>' +
     '<span class="badge">' + esc(L(p.badge)) + '</span><h1>' + L(p.title) + '</h1><p class="lead">' + esc(L(p.lead)) + '</p>' +
-    (btns ? '<div class="cta">' + btns + '</div>' : '') + (p.meta ? '<p class="meta">' + esc(L(p.meta)) + '</p>' : '') + '</div>' +
-    (p.image ? '<div class="floaty"><div class="win"><div class="dots"><i></i><i></i><i></i></div><img src="' + esc(p.image) + '" width="' + (p.imageSize ? p.imageSize[0] : 1000) + '" height="' + (p.imageSize ? p.imageSize[1] : 560) + '" alt="' + esc(L(p.imageAlt)) + '"></div></div>' : '') +
+    (btns ? '<div class="cta">' + btns + '</div>' : '') + (p.meta ? '<p class="meta">' + L(p.meta).split(" · ").map(function (m) { return '<span>' + esc(m) + '</span>'; }).join("") + '</p>' : '') + '</div>' +
+    (p.image ? '<div class="floaty">' + blocksSvg("a") + blocksSvg("b") + '<div class="win"><div class="dots"><i></i><i></i><i></i><span>' + esc(p.name) + '</span></div><img src="' + esc(p.image) + '" width="' + (p.imageSize ? p.imageSize[0] : 1000) + '" height="' + (p.imageSize ? p.imageSize[1] : 560) + '" alt="' + esc(L(p.imageAlt)) + '"></div></div>' : '') +
     '</section>';
   if (p.features) {
     h += '<section class="sec"><h2>' + L(p.features.title) + '</h2><p class="sub">' + esc(L(p.features.sub)) + '</p><div class="feats">' +
       p.features.items.map(function (f) {
-        return '<div class="feat"><div class="ic"><svg viewBox="0 0 24 24"><path d="' + (ICONS[f.icon] || ICONS.star) + '"/></svg></div><h3>' + esc(L(f.title)) + '</h3><p>' + esc(L(f.text)) + '</p></div>';
+        return '<div class="feat"><svg class="ghost" viewBox="0 0 24 24" aria-hidden="true"><path d="' + (ICONS[f.icon] || ICONS.star) + '"/></svg><div class="ic"><svg viewBox="0 0 24 24"><path d="' + (ICONS[f.icon] || ICONS.star) + '"/></svg></div><h3>' + esc(L(f.title)) + '</h3><p>' + esc(L(f.text)) + '</p></div>';
       }).join("") + '</div></section>';
   }
   if (p.steps) {
@@ -453,6 +586,7 @@ function pageHtml(p) {
       (p.terminal ? '<div class="term"><div class="dots"><i></i><i></i><i></i><span>' + esc(p.terminal.file) + '</span></div><pre>' + p.terminal.html + '</pre></div>' : '') +
       '</div></section>';
   }
+  if (!soon && btns) h += '<section class="final"><h2>' + L(UI.final) + '</h2><p>' + esc(L(UI.finalsub)) + '</p><div class="cta">' + btns + '</div></section>';
   return h + updatesHtml(p);
 }
 function renderPages() {
@@ -494,7 +628,7 @@ document.getElementById("cat").addEventListener("click", function (e) {
   if (g) {
     cat = g.getAttribute("data-g"); renderRail();
     var first = PRODUCTS.filter(function (p) { return p.group === cat; })[0];
-    if (first) show(first.id);
+    if (first) go(first.id);
     var b = document.getElementById("catbtn"); if (b) b.focus();
     return;
   }
@@ -509,15 +643,15 @@ document.getElementById("cat").addEventListener("keydown", function (e) {
 });
 document.addEventListener("click", function (e) { if (!e.target.closest("#cat")) setMenu(false); });
 document.getElementById("tabs").addEventListener("click", function (e) {
-  var t = e.target.closest(".tab"); if (t) show(t.id.slice(4));
+  var t = e.target.closest(".tab"); if (t) go(t.id.slice(4));
 });
 document.getElementById("tabs").addEventListener("keydown", function (e) {
   var t = e.target.closest(".tab"); if (!t) return;
   var all = Array.prototype.slice.call(document.querySelectorAll(".tab")), i = all.indexOf(t), k = e.key;
   var n = k === "ArrowDown" || k === "ArrowRight" ? 1 : k === "ArrowUp" || k === "ArrowLeft" ? -1 : 0;
-  if (n) { e.preventDefault(); show(all[(i + n + all.length) % all.length].id.slice(4), { focus: true }); }
+  if (n) { e.preventDefault(); go(all[(i + n + all.length) % all.length].id.slice(4), { focus: true }); }
 });
-document.getElementById("logo").addEventListener("click", function (e) { e.preventDefault(); if (PRODUCTS[0]) show(PRODUCTS[0].id); });
+document.getElementById("logo").addEventListener("click", function (e) { e.preventDefault(); if (PRODUCTS[0]) go(PRODUCTS[0].id); });
 function setLang(l) {
   if (l === lang) return;
   lang = l;
@@ -531,7 +665,7 @@ function setLang(l) {
 });
 document.getElementById("copy").addEventListener("click", function () {
   var b = this;
-  try { navigator.clipboard.writeText("halowlight@gmail.com").then(function () { b.textContent = "✓"; setTimeout(function () { b.textContent = L(UI.copy); }, 1200); }, function () {}); } catch (e) {}
+  try { navigator.clipboard.writeText("halowlight@gmail.com").then(function () { b.textContent = "✓"; toast(L(UI.copied)); setTimeout(function () { b.textContent = L(UI.copy); }, 1200); }, function () {}); } catch (e) {}
 });
 
 /* ===== hiệu ứng ===== */
@@ -646,6 +780,53 @@ function setVoxColor(hex) {
   }
   size(); window.addEventListener("resize", size); requestAnimationFrame(frame);
 })();
+
+/* ===== v2: chuyển trang bằng ô vuông, tiến độ cuộn, hạt nổ, toast ===== */
+var busy = false, toastT = null;
+function toast(msg) {
+  var t = document.getElementById("toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("on"); }, 1600);
+}
+function go(id, opts) {
+  if (busy) return;
+  if (REDUCED || id === current) { show(id, opts); return; }
+  var p = byId(id); if (!p) return;
+  var m = document.getElementById("mosaic"), w = m.clientWidth || innerWidth, h = m.clientHeight || innerHeight;
+  var sz = w < 700 ? 56 : 84, cols = Math.ceil(w / sz), rows = Math.ceil(h / sz), html = "";
+  m.style.gridTemplateColumns = "repeat(" + cols + ",1fr)"; m.style.gridTemplateRows = "repeat(" + rows + ",1fr)"; m.style.setProperty("--mc", p.color);
+  for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) html += '<i style="--cd:' + Math.round((c * 9 + r * 6) + Math.random() * 60) + 'ms"></i>';
+  m.innerHTML = html; busy = true;
+  setTimeout(function () { show(id, opts); }, 400);
+  setTimeout(function () { m.innerHTML = ""; busy = false; }, 900);
+}
+(function () {
+  var bar = document.querySelector("#prog i"), tick = false;
+  function upd() {
+    tick = false;
+    var max = document.documentElement.scrollHeight - innerHeight;
+    bar.parentNode.style.setProperty("--p", max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+    bar.style.setProperty("--p", max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+  }
+  addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+  addEventListener("resize", upd); upd();
+})();
+document.addEventListener("click", function (e) {
+  var b = e.target.closest && e.target.closest(".btn.pri");
+  if (!b || REDUCED || !b.animate) return;
+  var x = e.clientX || (b.getBoundingClientRect().left + 30), y = e.clientY || (b.getBoundingClientRect().top + 20);
+  for (var i = 0; i < 14; i++) {
+    var d = document.createElement("i"), a = Math.random() * 6.283, v = 40 + Math.random() * 70, s = 4 + Math.random() * 6;
+    d.className = "spark"; d.style.left = x + "px"; d.style.top = y + "px"; d.style.width = d.style.height = s + "px";
+    if (i % 3 === 0) d.style.background = "var(--acc2)";
+    document.body.appendChild(d);
+    d.animate([{ transform: "translate(0,0) rotate(0)", opacity: 1 }, { transform: "translate(" + Math.cos(a) * v + "px," + (Math.sin(a) * v + 30) + "px) rotate(" + (Math.random() * 360) + "deg)", opacity: 0 }], { duration: 600 + Math.random() * 300, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = (function (n) { return function () { n.remove(); }; })(d);
+  }
+});
+document.getElementById("pages").addEventListener("pointermove", function (e) {
+  if (e.pointerType !== "mouse") return;
+  var hero = e.target.closest(".hero"); if (!hero) return;
+  var r = hero.getBoundingClientRect(); hero.style.setProperty("--hx", (e.clientX - r.left) + "px"); hero.style.setProperty("--hy", (e.clientY - r.top) + "px");
+});
 
 render();
 </script>
