@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>halowlight</title>
+<meta name="description" content="halowlight là studio làm ứng dụng, game và công cụ. / halowlight is a studio making apps, games and tools.">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,13 +47,28 @@ img{max-width:100%;display:block}
 .dd{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s}
 [aria-expanded="true"]>.dd{transform:rotate(180deg)}
 .connbtn .ico{display:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.catmenu,.connmenu{position:absolute;top:calc(100% + 1px);z-index:40;min-width:230px;background:#0F182B;border:1px solid #2A3750;border-radius:0 0 14px 14px;box-shadow:0 22px 44px -12px #000e;padding:8px}
-.catmenu{left:-1px}
-.connmenu{right:0;min-width:262px}
-.catmenu button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;font:500 15px var(--body);color:var(--text)}
+/* cửa sổ thả xuống: bảng nổi bo tròn, có mũi nhọn chỉ vào nút */
+.catmenu,.connmenu{position:absolute;top:calc(100% + 10px);z-index:40;background:#0E1729;border:1px solid #2A3750;border-radius:18px;box-shadow:0 28px 60px -16px #000f,0 0 0 1px #ffffff08 inset;padding:10px;transform-origin:top left}
+.catmenu::before,.connmenu::before{content:"";position:absolute;top:-7px;left:26px;width:12px;height:12px;background:#0E1729;border-left:1px solid #2A3750;border-top:1px solid #2A3750;transform:rotate(45deg);border-radius:3px 0 0 0}
+.catmenu{left:10px;width:318px}
+.connmenu{right:0;min-width:262px;transform-origin:top right}
+.connmenu::before{left:auto;right:30px}
+.mhead{padding:4px 10px 8px;font:600 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.catmenu button{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:42px minmax(0,1fr) auto;align-items:center;gap:14px;padding:10px;border-radius:12px;cursor:pointer;color:var(--text);transition:background .15s}
+.catmenu button+button{margin-top:4px}
 .catmenu button:hover,.catmenu button:focus-visible{background:#17233B}
-.catmenu button[aria-checked="true"]{color:var(--acc)}
-.catmenu small{font:500 12px var(--body);color:var(--muted)}
+.catmenu button:focus-visible{outline:2px solid var(--acc);outline-offset:-2px}
+.catmenu .mi{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#17233B;color:var(--muted);transition:background .2s,color .2s}
+.catmenu button:hover .mi{color:var(--text)}
+.catmenu .mi svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.catmenu .mt{display:flex;flex-direction:column;min-width:0;gap:1px}
+.catmenu .mt b{font:600 16px var(--body)}
+.catmenu .mt small{font:400 12.5px var(--body);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.catmenu .mc{min-width:26px;padding:2px 8px;border-radius:999px;background:#17233B;color:var(--muted);font:600 12px var(--body);text-align:center}
+.catmenu button[aria-checked="true"]{background:color-mix(in srgb,var(--acc) 13%,#0E1729)}
+.catmenu button[aria-checked="true"] .mi{background:var(--acc);color:var(--acc-ink)}
+.catmenu button[aria-checked="true"] .mt b{color:var(--acc)}
+.catmenu button[aria-checked="true"] .mc{background:var(--acc);color:var(--acc-ink)}
 
 /* tab sản phẩm: chữ thường, gạch chân màu sản phẩm ở tab đang xem */
 .tabs{position:relative;display:flex;align-items:stretch;flex:0 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
@@ -165,6 +181,8 @@ footer.fine{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);co
   .grow{display:none}.tabs{flex:1 1 auto;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
   .conn,.langsw{margin-left:auto}
   .connmenu{right:-10px}
+  .catmenu{position:fixed;left:10px;right:10px;width:auto;top:calc(var(--bar-h) + 8px)}
+  .catmenu::before{left:136px}
   main{margin-left:0}
   .upd{flex-direction:column;gap:2px}
 }
@@ -205,8 +223,6 @@ main{position:relative;z-index:1}
 .tab{animation:tabin .4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--n,0)*60ms);transition:background .2s,color .2s}
 .ind{position:absolute;left:var(--ix,0);bottom:0;width:var(--iw,0);height:3px;border-radius:3px 3px 0 0;background:var(--acc);box-shadow:0 0 14px var(--acc);transition:left .38s cubic-bezier(.3,.8,.2,1),width .38s cubic-bezier(.3,.8,.2,1)}
 .catmenu:not([hidden]),.connmenu:not([hidden]){animation:pop .18s ease-out}
-.catmenu button{transition:background .15s,padding-left .15s}
-.catmenu button:hover{padding-left:14px}
 
 /* đầu trang sản phẩm */
 .hero::before{animation:glow 6s ease-in-out infinite}
@@ -380,6 +396,8 @@ body::before{content:"";position:fixed;inset:0 0 0 var(--rail-w);z-index:0;point
 
 /* cuối mỗi tab: mạng xã hội, liên hệ */
 .contact{padding-block:48px 28px}
+#contact-home{border-top:0;padding-block:0 40px}
+.hero.solo.home{padding-block-end:24px}
 .soc{display:flex;flex-wrap:wrap;gap:10px}
 .soc a{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--text);text-decoration:none;font-size:15px;transition:border-color .2s,color .2s,transform .2s}
 .soc a:hover{border-color:var(--acc);color:var(--acc);transform:translateY(-2px)}
@@ -514,7 +532,7 @@ var PRODUCTS = [
     sub:   { vi: "Game · Sắp có", en: "Game · Coming soon" },
     badge: { vi: "Sắp có", en: "Coming soon" },
     title: { vi: "Game đầu tiên <em>sắp có</em>", en: "The first game is <em>coming soon</em>" },
-    lead:  { vi: "Mình đang làm game. Xong sẽ đăng ở đây kèm nút tải. Theo dõi Discord hoặc TikTok để biết ngày ra mắt.", en: "A game is in the works. When it is done it will be posted here with a download button. Follow on Discord or TikTok for the release date." }
+    lead:  { vi: "Chúng tôi đang làm game. Xong sẽ đăng ở đây kèm nút tải. Theo dõi Discord hoặc TikTok để biết ngày ra mắt.", en: "We are working on a game. When it is done we will post it here with a download button. Follow us on Discord or TikTok for the release date." }
   }
 
   // VÍ DỤ sản phẩm sắp ra mắt: bỏ dấu // ở đầu mỗi dòng, và thêm dấu phẩy sau dấu } của sản phẩm phía trên.
@@ -542,6 +560,12 @@ var GROUPS = [
   { id: "tool",  label: { vi: "Công cụ", en: "Tools" } },
   { id: "other", label: { vi: "Dự án khác", en: "Other projects" } }
 ];
+var GICON = {
+  app: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+  game: "M6 8h12a4 4 0 014 4v2a3 3 0 01-5.2 2L15 14H9l-1.8 2A3 3 0 012 14v-2a4 4 0 014-4zM8 10.5v3M6.5 12h3M16 11.5h.01M18 13.5h.01",
+  tool: "M4 7h10m4 0h2M4 17h2m4 0h10M14 4v6M6 14v6",
+  other: "M6 12h.01M12 12h.01M18 12h.01"
+};
 var UI = {
   connect: { vi: "Kết nối", en: "Connect" }, category: { vi: "Danh mục", en: "Category" }, copy: { vi: "Sao chép", en: "Copy" }, soon: { vi: "Sắp có", en: "Soon" },
   updates: { vi: "Cập nhật <em>gần đây</em>", en: "Recent <em>updates</em>" },
@@ -550,12 +574,12 @@ var UI = {
   copied: { vi: "Đã sao chép Gmail", en: "Gmail copied" },
   home: { vi: "Trang chủ", en: "Home" }, dl: { vi: "Tải về", en: "Download" }, open: { vi: "Xem chi tiết", en: "View details" },
   homeBadge: { vi: "Chào mừng", en: "Welcome" },
-  homeTitle: { vi: "Xin chào, mình là <em>halowlight</em>", en: "Hi, I'm <em>halowlight</em>" },
-  homeLead: { vi: "Nơi mình đăng các ứng dụng, game và công cụ tự làm. Chọn một dự án bên dưới để xem chi tiết và tải về.", en: "This is where I share the apps, games and tools I make. Pick a project below to see the details and download it." },
-  projects: { vi: "Các <em>dự án</em>", en: "My <em>projects</em>" },
-  projectsSub: { vi: "Mọi thứ mình đã làm, bấm vào để xem.", en: "Everything I've built so far. Click one to open it." },
-  contactTitle: { vi: "Kết nối <em>với mình</em>", en: "Get in <em>touch</em>" },
-  contactSub: { vi: "Theo dõi trên mạng xã hội hoặc nhắn qua Gmail nếu bạn cần hỗ trợ.", en: "Follow me on social media, or email me if you need help." }
+  homeTitle: { vi: "Chào mừng đến với <em>halowlight</em>", en: "Welcome to <em>halowlight</em>" },
+  homeLead: { vi: "halowlight là studio làm ứng dụng, game và công cụ. Chọn một dự án bên dưới để xem chi tiết và tải về.", en: "halowlight is a studio making apps, games and tools. Pick a project below to see the details and download it." },
+  projects: { vi: "Các <em>dự án</em>", en: "Our <em>projects</em>" },
+  projectsSub: { vi: "Mọi thứ chúng tôi đã làm, bấm vào để xem.", en: "Everything we've built so far. Click one to open it." },
+  contactTitle: { vi: "Kết nối <em>với chúng tôi</em>", en: "Get in <em>touch</em>" },
+  contactSub: { vi: "Theo dõi chúng tôi trên mạng xã hội hoặc nhắn qua Gmail nếu bạn cần hỗ trợ.", en: "Follow us on social media, or email us if you need help." }
 };
 var ICONS = {
   download: "M12 3v12m0 0l-4-4m4 4l4-4M4 20h16",
@@ -594,8 +618,9 @@ function renderRail() {
   var cur = GROUPS.filter(function (g) { return g.id === cat; })[0];
   document.getElementById("cat").innerHTML =
     '<button class="catbtn" id="catbtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="' + esc(L(UI.category)) + '"><span>' + esc(cur ? L(cur.label) : "") + '<small>(' + (cur ? countIn(cur.id) : 0) + ')</small></span><svg class="dd" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' +
-    '<div class="catmenu" id="catmenu" role="menu" hidden>' + gs.map(function (g) {
-      return '<button type="button" role="menuitemradio" aria-checked="' + (g.id === cat) + '" data-g="' + esc(g.id) + '"><span>' + esc(L(g.label)) + '</span><small>' + countIn(g.id) + '</small></button>';
+    '<div class="catmenu" id="catmenu" role="menu" hidden><div class="mhead">' + esc(L(UI.category)) + '</div>' + gs.map(function (g) {
+      var names = PRODUCTS.filter(function (p) { return p.group === g.id; }).map(function (p) { return p.name; }).join(", ");
+      return '<button type="button" role="menuitemradio" aria-checked="' + (g.id === cat) + '" data-g="' + esc(g.id) + '"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + (GICON[g.id] || GICON.other) + '"/></svg></span><span class="mt"><b>' + esc(L(g.label)) + '</b><small>' + esc(names) + '</small></span><span class="mc">' + countIn(g.id) + '</span></button>';
     }).join("") + '</div>';
   document.getElementById("tabs").innerHTML = PRODUCTS.filter(function (p) { return p.group === cat; }).map(function (p, i) { return tabHtml(p, i); }).join("") + '<span class="ind" aria-hidden="true"></span>';
 }
@@ -690,12 +715,17 @@ function homeHtml() {
       '<span class="pbody"><span class="pmeta">' + esc(g ? L(g.label) : "") + (p.status === "soon" ? ' · ' + esc(L(UI.soon)) : '') + '</span><span class="pname">' + esc(p.name) + '</span><span class="pdesc">' + esc(L(p.lead)) + '</span><span class="pgo">' + esc(L(UI.open)) + ' →</span></span></button>';
   }).join("");
   return '<section class="hero solo home"><div><span class="badge">' + esc(L(UI.homeBadge)) + '</span><h1>' + L(UI.homeTitle) + '</h1><p class="lead">' + esc(L(UI.homeLead)) + '</p></div></section>' +
+    '<section class="sec contact" id="contact-home">' + contactInner("copy3") + '</section>' +
     '<section class="sec"><h2>' + L(UI.projects) + '</h2><p class="sub">' + esc(L(UI.projectsSub)) + '</p><div class="projs">' + cards + '</div></section>';
 }
-function renderContact() {
+function contactInner(copyId) {
   var links = Array.prototype.map.call(document.querySelectorAll("#connmenu .links a"), function (a) { return a.outerHTML; }).join("");
-  document.getElementById("contact").innerHTML = '<h2>' + L(UI.contactTitle) + '</h2><p class="sub">' + esc(L(UI.contactSub)) + '</p><div class="soc">' + links + '</div>' +
-    '<div class="mailrow">Gmail: <code>halowlight@gmail.com</code><button type="button" id="copy2">' + esc(L(UI.copy)) + '</button></div>';
+  var head = copyId === "copy3" ? '' : '<h2>' + L(UI.contactTitle) + '</h2><p class="sub">' + esc(L(UI.contactSub)) + '</p>';
+  return head + '<div class="soc">' + links + '</div>' +
+    '<div class="mailrow">Gmail: <code>halowlight@gmail.com</code><button type="button" id="' + copyId + '">' + esc(L(UI.copy)) + '</button></div>';
+}
+function renderContact() {
+  document.getElementById("contact").innerHTML = contactInner("copy2");
 }
 function renderPages() {
   document.getElementById("pages").innerHTML = '<div class="page" id="p-home" role="tabpanel" aria-labelledby="tab-home" hidden>' + homeHtml() + '</div>' + PRODUCTS.map(function (p) {
@@ -714,6 +744,7 @@ function show(id, opts) {
   });
   var ht = document.getElementById("tab-home"), hp = document.getElementById("p-home");
   ht.setAttribute("aria-current", p === HOME ? "page" : "false"); if (hp) hp.hidden = p !== HOME;
+  document.getElementById("contact").style.display = p === HOME ? "none" : "";
   setVoxColor(p.color); updateNav(p); updateInd();
   var act = document.getElementById("tab-" + p.id);
   if (opts && opts.focus && act) act.focus();
@@ -789,7 +820,7 @@ function setLang(l) {
   });
 });
 document.addEventListener("click", function (e) {
-  var b = e.target.closest && e.target.closest("#copy, #copy2"); if (!b) return;
+  var b = e.target.closest && e.target.closest("#copy, #copy2, #copy3"); if (!b) return;
   try { navigator.clipboard.writeText("halowlight@gmail.com").then(function () { b.textContent = "✓"; toast(L(UI.copied)); setTimeout(function () { b.textContent = L(UI.copy); }, 1200); }, function () {}); } catch (e) {}
 });
 
